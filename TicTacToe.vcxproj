@@ -139,7 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="IGameMode.cpp" />
+    <ClCompile Include="SinglePlayerMode.cpp" />
     <ClCompile Include="TicTacToe.cpp" />
+    <ClCompile Include="TwoPlayerMode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="IGameMode.h" />
+    <ClInclude Include="SinglePlayerMode.h" />
+    <ClInclude Include="TwoPlayerMode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

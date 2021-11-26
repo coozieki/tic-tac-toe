@@ -13,10 +13,48 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\GameModes">
+      <UniqueIdentifier>{ced3fd78-e8d1-4e56-9b39-156b4fe46729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\GameModes">
+      <UniqueIdentifier>{3a5ccdcc-ea3b-4fc1-83e9-1608416716fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TicTacToe.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="IGameMode.cpp">
+      <Filter>Исходные файлы\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="SinglePlayerMode.cpp">
+      <Filter>Исходные файлы\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="TwoPlayerMode.cpp">
+      <Filter>Исходные файлы\GameModes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Console.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameMode.h">
+      <Filter>Файлы заголовков\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglePlayerMode.h">
+      <Filter>Файлы заголовков\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="TwoPlayerMode.h">
+      <Filter>Файлы заголовков\GameModes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
