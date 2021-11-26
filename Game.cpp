@@ -3,8 +3,8 @@
 namespace GameInfo
 {
 	std::map<int, char> symbols = {
-		{ 0, 'X' },
-		{ 1, 'O' }
+		{ 0, '>' },
+		{ 1, '<' }
 	};
 
 	char getSymbolForPlayer(int player) {
@@ -17,6 +17,7 @@ void Game::resetGame()
 	turn = 0;
 	winner = -1;
 	gameover = false;
+	delete(gameMode);
 	memcpy(field, initialField, sizeof(field));
 }
 
@@ -31,19 +32,21 @@ chooseOption:
 		<< "2. Start two players game" << std::endl 
 		<< "0. Exit" << std::endl;
 
-	int input;
-	try {
-		std::cout << ">";
-		std::cin >> input;
-	}
-	catch (int) {
+	std::string input;
+
+	std::cout << ">";
+	std::cin >> input;
+
+	if (input != "1" && input != "2" && input != "0") {
 		console.clearScreen();
 		std::cout << "Wrong input. Try again:" << std::endl;
 		goto chooseOption;
 	}
 
-	switch (input) {
-	case 1:
+	std::string playerChosenSymbol;
+
+	switch (input[0]) {
+	case '1':
 		console.clearScreen();
 
 	chooseSymbolOption:
@@ -52,38 +55,23 @@ chooseOption:
 			<< "1. " << GameInfo::getSymbolForPlayer(0) << std::endl 
 			<< "2. " << GameInfo::getSymbolForPlayer(1) << std::endl;
 
-		int playerChosenSymbol;
-		std::cout << ">";
-		try {
-			std::cin >> playerChosenSymbol;
 
-			if (playerChosenSymbol != 1 && playerChosenSymbol != 2) {
-				throw std::exception();
-			}
-		}
-		catch (int) {
+		std::cout << ">";
+		std::cin >> playerChosenSymbol;
+
+		if (playerChosenSymbol != "1" && playerChosenSymbol != "2") {
 			console.clearScreen();
 			std::cout << "Wrong input. Try again." << std::endl;
 			goto chooseSymbolOption;
 		}
 
-		delete(gameMode);
-		gameMode = new SinglePlayerMode(playerChosenSymbol - 1);
-		draw(NULL);
+		gameMode = new SinglePlayerMode(playerChosenSymbol[0] - '0' - 1);
 		break;
-	case 2:
-		delete(gameMode);
+	case '2':
 		gameMode = new TwoPlayerMode();
-		draw(NULL);
 		break;
-	case 0:
-		delete(gameMode);
+	case '0':
 		exit(0);
-		break;
-	default:
-		console.clearScreen();
-		std::cout << "Wrong input. Try again:" << std::endl;
-		goto chooseOption;
 		break;
 	}
 }
@@ -112,29 +100,20 @@ void Game::draw(int input)
 
 bool Game::wantsToStartAgain()
 {
-chooseOption:
 	std::cout << "Want to start again?" << std::endl << "1. Yes" << std::endl << "2. No" << std::endl;
 
-	int input;
-	try {
-		std::cout << ">";
-		std::cin >> input;
-	}
-	catch (int) {
-		std::cout << "Wrong input. Try again." << std::endl;
+	std::string input;
+
+chooseOption:
+	std::cout << ">";
+	std::cin >> input;
+
+	if (input != "1" && input != "2") {
+		std::cout << "Wrong input. Try again:" << std::endl;
 		goto chooseOption;
 	}
 
-	switch (input) {
-	case 1:
-		return true;
-	case 2:
-		delete(gameMode);
-		return false;
-	default:
-		std::cout << "Wrong input. Try again." << std::endl;
-		goto chooseOption;
-	}
+	return input == "1" ? true : false;
 }
 
 void Game::updateFieldCell(int input)
@@ -149,94 +128,34 @@ bool Game::checkGameOver()
 
 bool Game::checkVerticalLines()
 {
-	char prevChar = NULL;
+	bool gameover = (field[0][0] == field[1][0] && field[1][0] == field[2][0])
+				 || (field[0][1] == field[1][1] && field[1][1] == field[2][1])
+				 || (field[0][2] == field[1][2] && field[1][2] == field[2][2]);
 
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			if (prevChar == NULL) {
-				prevChar = field[j][i];
-				continue;
-			}
+	if (gameover) setWinner();
 
-			if (prevChar != field[j][i] || (prevChar != 'X' && prevChar != 'O')) {
-				prevChar = NULL;
-				break;
-			}
-
-			if (j == 2) {
-				setWinner();
-				return true;
-			}
-		}
-	}
-
-	return false;
+	return gameover;
 }
 
 bool Game::checkHorizontalLines()
 {
-	char prevChar = NULL;
+	bool gameover = (field[0][0] == field[0][1] && field[0][1] == field[0][2])
+				 || (field[1][0] == field[1][1] && field[1][1] == field[1][2])
+				 || (field[2][0] == field[2][1] && field[2][1] == field[2][2]);
 
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			if (prevChar == NULL) {
-				prevChar = field[i][j];
-				continue;
-			}
+	if (gameover) setWinner();
 
-			if (prevChar != field[i][j] || (prevChar != 'X' && prevChar != 'O')) {
-				prevChar = NULL;
-				break;
-			}
-
-			if (j == 2) {
-				setWinner();
-				return true;
-			}
-		}
-	}
-
-	return false;
+	return gameover;
 }
 
 bool Game::checkDiagonalLines()
 {
-	char prevChar = NULL;
+	bool gameover = (field[0][0] == field[1][1] && field[1][1] == field[2][2])
+				 || (field[2][0] == field[1][1] && field[1][1] == field[0][2]);
 
-	for (int i = 0; i < 3; i++) {
-		if (prevChar == NULL) {
-			prevChar = field[i][i];
-			continue;
-		}
+	if (gameover) setWinner();
 
-		if (prevChar != field[i][i] || (prevChar != 'X' && prevChar != 'O')) {
-			break;
-		}
-
-		if (i == 2) {
-			setWinner();
-			return true;
-		}
-	}
-
-	prevChar = NULL;
-	for (int i = 2; i >= 0; i--) {
-		if (prevChar == NULL) {
-			prevChar = field[i][2 - i];
-			continue;
-		}
-
-		if (prevChar != field[i][2 - i] || (prevChar != 'X' && prevChar != 'O')) {
-			break;
-		}
-
-		if (i == 0) {
-			setWinner();
-			return true;
-		}
-	}
-
-	return false;
+	return gameover;
 }
 
 void Game::setWinner()
@@ -259,4 +178,23 @@ void Game::displayResult()
 char Game::getCurrentTurnSymbol()
 {
 	return GameInfo::getSymbolForPlayer(turn % 2);
+}
+
+void Game::start()
+{
+newGame:
+	resetGame();
+	showMainMenu();
+
+	draw(NULL);
+	while (!gameover) {
+		int input = processInput();
+		update(input);
+		draw(input);
+	}
+
+	displayResult();
+	if (wantsToStartAgain()) {
+		goto newGame;
+	}
 }

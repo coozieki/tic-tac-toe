@@ -70,20 +70,5 @@ private:
 
 public:
 
-	void start() {
-	newGame:
-		resetGame();
-		showMainMenu();
-
-		while (!gameover) {
-			int input = processInput();
-			update(input);
-			draw(input);
-		}
-
-		displayResult();
-		if (wantsToStartAgain()) {
-			goto newGame;
-		}
-	}
+	void start();
 };
