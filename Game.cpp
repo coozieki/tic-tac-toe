@@ -3,8 +3,8 @@
 namespace GameInfo
 {
 	std::map<int, char> symbols = {
-		{ 0, '>' },
-		{ 1, '<' }
+		{ 0, 'X' },
+		{ 1, 'O' }
 	};
 
 	char getSymbolForPlayer(int player) {
